@@ -1,4 +1,4 @@
-# WebServices
+# Cinema WebServices
 
 Possibilities:
 - Get all the movies that are currently shown
