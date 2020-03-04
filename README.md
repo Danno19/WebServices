@@ -7,6 +7,7 @@ Possibilities:
 - Delete a record of movie that is shown at the theatre (movie is out of programme of the theatre)
 
 Build: docker-compose up --build -d
+
 Run:   docker run -it (directory)_web 
 
-View: localhost:5000/movies
+View:  localhost:5000/movies
