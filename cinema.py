@@ -39,7 +39,7 @@ class Movie(Resource):
         for movie in movies.values():
             repertoire.append(movie)
         if len(repertoire) is 0:
-            return 'Nothing to watch', 200
+            return 'Nothing to watch', 404
         else:
             return repertoire, 200
 
@@ -50,18 +50,12 @@ class Movie(Resource):
         new_movie = {'id': movie_counter, 'title': args['title'], 'eidr': args['eidr'], 'year': args['year'], 'director': args['director'] }
         if args['eidr'] in id_register:
             movie_counter -= 1
-            return 'Every movie has its unique EIDR', 400
+            return 'Every movie has its unique EIDR', 403
         else:
             movies[new_movie['id']] = new_movie
             id_register.append(new_movie['eidr'])
-            return 'Movie "'+new_movie['title']+'" succesfully added with ID '+str(movie_counter), 200
-
-    def put(self):
-        return 'Update is not allowed on this page', 400
-
-    def delete(self):
-        return 'Delete is not allowed on this page', 400
-
+            return 'Movie "'+new_movie['title']+'" succesfully added with ID '+str(movie_counter), 201
+    
 class MovieById(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -72,35 +66,32 @@ class MovieById(Resource):
         
     def get(self, id):
         if id not in movies:
-            return 'There is no movie with the given ID', 400
+            return 'There is no movie with the given ID', 404
         else:
             return movies[id], 200
 
-    def post(self, id):
-        return 'There is no possibility to post on this page', 400
-
     def put(self, id):
         if id not in movies:
-            return 'There is no movie with the given ID', 400
+            return 'There is no movie with the given ID', 404
         else:
             args = self.reqparse.parse_args()
             temp_eidr = movies[id].get('eidr')
             id_register.remove(temp_eidr)
             changed_movie = {'id': id, 'title': args['title'], 'eidr': args['eidr'], 'year': args['year'], 'director': args['director'] }
             if args['eidr'] in id_register:
-                return 'Every movie has its unique EIDR', 400
+                return 'Every movie has its unique EIDR', 403
             else:
                 movies[id] = changed_movie
                 id_register.append(changed_movie['eidr'])
                 return 'Movie "'+changed_movie['title']+'" succesfully changed with ID '+str(id), 200
-
+    
     def delete(self, id):
         if id not in movies:
-            return 'There is no movie with the given ID', 400
+            return 'There is no movie with the given ID', 404
         else:
             movies.pop(id)
             return 'Movie with ID '+str(id)+' succesfully deleted', 200
-
+    
 class Home(Resource):
     def get(self):
         pass
