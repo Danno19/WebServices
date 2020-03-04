@@ -8,3 +8,5 @@ Possibilities:
 
 Build: docker-compose up --build -d
 Run:   docker run -it (directory)_web 
+
+View: localhost:5000/movies
