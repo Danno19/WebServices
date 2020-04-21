@@ -1,0 +1,15 @@
+version: '3'
+networks:
+    default:
+        external:
+            name: ws_bridge
+
+services:
+    web:
+        build: .
+        command: javac dema4638/src/main/java/SimpleHTTPServer.java
+        ports:
+            - "5005:5005"
+        volumes:
+            - .:/service
+        container_name: dema_vu_service
