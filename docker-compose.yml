@@ -1,6 +1,26 @@
-web:
-    build: .
-    ports:
-        - "5000:5000"
-    volumes:
-    - .:/app
+version: '3'
+services:
+    movies:
+        stdin_open: true
+        build: .
+        command: python service.py
+        ports:
+            - "5000:5000"
+        volumes:
+        - .:/service
+        container_name: danno_vu_service
+        networks:
+            - ws_bridge
+    books:
+        stdin_open: true
+        build: .
+        command: javac dema4638/src/main/java/SimpleHTTPServer.java
+        ports:
+            - "80:80"
+        volumes:
+        - .:/service
+        container_name: external
+        networks:
+            - ws_bridge
+ networks:
+    ws_bridge:
