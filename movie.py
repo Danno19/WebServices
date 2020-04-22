@@ -17,20 +17,23 @@ class Movie(Resource):
         for movie in movies.values():
             repertoire.append(movie)
         if len(repertoire) is 0:
-            return 'Nothing to watch', 404
+            return 'Repertoire is empty', 404
         else:
             return repertoire, 200
 
     def post(self):
         args = self.reqparse.parse_args()
         
-        global movie_counter
-        movie_counter += 1
-        
-        new_movie = {'id': movie_counter, 'title': args['title'], 'eidr': args['eidr'], 'year': args['year'], 'director': args['director'], 'books': args['books'] }
+        new_movie = {
+            'id': movie_counter, 
+            'title': args['title'], 
+            'eidr': args['eidr'], 
+            'year': args['year'], 
+            'director': args['director'], 
+            'books': args['books'] 
+            }
         
         if args['eidr'] in id_register:
-            movie_counter -= 1
             return 'Every movie has its unique EIDR', 403
         else:
             library = args['books'].split(',')
@@ -46,14 +49,13 @@ class Movie(Resource):
 
                     for duplicate in duplicates:
                         if duplicate == int('isbn'):
-                            movie_counter -= 1
                             return "Book duplicates found in json", 400
 
                     duplicates.append(int(isbn))
 
                 except IndexError as exc:
                     movie_counter -= 1
-                    return "At least one book isbn is invalid or the json format is unrecognized", 400
+                    return "At least one book isbn: '"+ isbn +"' is invalid or the json format is unrecognized", 400
 
             movies[new_movie['id']] = new_movie
             id_register.append(new_movie['eidr'])

@@ -18,15 +18,26 @@ class MovieById(Resource):
         else:
             return movies[id], 200
 
+    def post(self, id):
+        return "Posting is not allowed on this page", 400
+
     def put(self, id):
         if id not in movies:
             return 'There is no movie with the given ID', 404
         else:
             args = self.reqparse.parse_args()
             temp_eidr = movies[id].get('eidr')
-            id_register.remove(temp_eidr)
+            if temp_eidr in id_register:
+                id_register.remove(temp_eidr)
             
-            changed_movie = {'id': id, 'title': args['title'], 'eidr': args['eidr'], 'year': args['year'], 'director': args['director'] }
+            changed_movie = {
+                'id': id, 
+                'title': args['title'], 
+                'eidr': args['eidr'], 
+                'year': args['year'], 
+                'director': args['director'],
+                'books': args['books']
+            }
             
             if args['eidr'] in id_register:
                 return 'Every movie has its unique EIDR', 403
@@ -42,13 +53,13 @@ class MovieById(Resource):
                 duplicates = []
                 for isbn in library:
                     try:
-                        books[int(isbn)].get('isbn')
+                        books[int(isbn)-9786090138823].get('isbn')
 
                         for duplicate in duplicates:
-                            if duplicate == int('isbn'):
+                            if duplicate == (int('isbn')-9786090138823):
                                 return "Book duplicates found in json", 400
 
-                        duplicates.append(int(isbn))
+                        duplicates.append(int(isbn)-9786090138823)
 
                     except IndexError as exc:
                         id_register.append(id_register)
