@@ -2,7 +2,7 @@ import requests
 
 class DeMaService:
     def __init__(self):
-        self.url = 'http://localhost:80/'
+        self.url = 'http://external:80/'
     
     def get_all_books(self):
         books = []
