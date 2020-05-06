@@ -12,4 +12,4 @@ Run:   docker run -it (directory)_web
 
 View:  
 * localhost:5000/movies
-* localhost:5000/movies/<id>
+* localhost:5000/movies/<movie_id>
